@@ -6,7 +6,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 // Form validation
 import * as Yup from 'yup'
 import { Formik } from 'formik';
-// YOUTUBE:
+
 const PasswordSchema = Yup.object().shape({
   passwordLength: Yup.number()
   .min(4, 'Should be min of 4 characters')
@@ -58,9 +58,7 @@ export default function App() {
       const characterIndex = Math.round(Math.random() * characters.length)
       result += characters.charAt(characterIndex)
     }
-    return result
-    console.log("hitesh");
-    
+    return result    
   }
 
   const resetPasswordState = () => {
