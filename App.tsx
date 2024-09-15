@@ -9,9 +9,10 @@ import { Formik } from 'formik';
 // YOUTUBE:
 const PasswordSchema = Yup.object().shape({
   passwordLength: Yup.number()
-    .min(4, 'Should be min of 4 characters')
-    .max(16, 'Should be max of 16 characters')
-    .required('Length is required')
+  .min(4, 'Should be min of 4 characters')
+  .max(16, 'Should be max of 16 characters')
+  .required('Length is required')
+  
 })
 export default function App() {
 
@@ -44,11 +45,11 @@ export default function App() {
       characterList += specialChars
     }
 
-    const passwordResult = createPassword(characterList, passwordLength)
+    const passwordResult = createPassword(characterList, passwordLength )
 
     setPassword(passwordResult)
     setIsPassGenerated(true)
-
+    
   }
 
   const createPassword = (characters: string, passwordLength: number) => {
@@ -59,7 +60,7 @@ export default function App() {
     }
     return result
     console.log("hitesh");
-
+    
   }
 
   const resetPasswordState = () => {
@@ -69,8 +70,8 @@ export default function App() {
     setupperCase(false)
     setNumbers(false)
     setSymbols(false)
-
-
+    
+    
   }
 
   return (
@@ -79,56 +80,56 @@ export default function App() {
         <View style={styles.formContainer}>
           <Text style={styles.title}>Password Generator</Text>
           <Formik
-            initialValues={{ passwordLength: '' }}
-            validationSchema={PasswordSchema}
-            onSubmit={values => {
-              console.log(values);
-              generatePasswordString(Number(values.passwordLength))
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              isValid,
-              handleChange,
-              handleSubmit,
-              handleReset,
-
-            }) => (
-              <>
-                <View style={styles.inputWrapper}>
-                  <View style={styles.inputColumn}>
-                    <Text style={styles.heading}>Password Length</Text>
-                    {touched.passwordLength && errors.passwordLength && (
-                      <Text style={styles.errorText}>
-                        {errors.passwordLength}
-                      </Text>
-                    )}
-
-                  </View>
-                  <TextInput
-                    style={styles.inputStyle}
-                    value={values.passwordLength}
-                    onChangeText={handleChange('passwordLength')}
-                    placeholder="Ex. 8"
-                    keyboardType='numeric'
-                  />
-                </View>
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.heading}>Include lowercase</Text>
-                  <BouncyCheckbox
-                    useBuiltInState={false}
-                    isChecked={lowerCase}
-                    onPress={() => setLowerCase(!lowerCase)}
-                    fillColor="#29AB87"
-                    style={styles.bouncyBox1}
-                  />
-                </View>
-                <View style={styles.inputWrapper}>
+       initialValues={{ passwordLength: '' }}
+       validationSchema={PasswordSchema}
+       onSubmit={ values => {
+        console.log(values);
+        generatePasswordString(+values.passwordLength) 
+       }}
+     >
+       {({
+         values,
+         errors,
+         touched,
+         isValid,
+         handleChange,
+         handleSubmit,
+         handleReset,
+         /* and other goodies */
+       }) => (
+         <>
+         <View style={styles.inputWrapper}>
+          <View style={styles.inputColumn}>
+            <Text style={styles.heading}>Password Length</Text>
+            {touched.passwordLength && errors.passwordLength && (
+              <Text style={styles.errorText}>
+                {errors.passwordLength}
+              </Text>
+            )}
+            
+          </View>
+          <TextInput
+            style={styles.inputStyle}
+            value={values.passwordLength}
+            onChangeText={handleChange('passwordLength')}
+            placeholder="Ex. 8"
+            keyboardType='numeric'
+            />
+         </View>
+         <View style={styles.inputWrapper}>
+          <Text style={styles.heading}>Include lowercase</Text>
+          <BouncyCheckbox
+          disableBuiltInState
+          isChecked={lowerCase}
+          onPress={() => setLowerCase(!lowerCase)}
+          fillColor="#29AB87"
+          style={styles.bouncyBox1}
+          />
+         </View>
+         <View style={styles.inputWrapper}>
                   <Text style={styles.heading}>Include Uppercase</Text>
                   <BouncyCheckbox
-                    useBuiltInState={false}
+                    disableBuiltInState
                     isChecked={upperCase}
                     onPress={() => setupperCase(!upperCase)}
                     fillColor="#FED85D"
@@ -138,7 +139,7 @@ export default function App() {
                 <View style={styles.inputWrapper}>
                   <Text style={styles.heading}>Include Numbers</Text>
                   <BouncyCheckbox
-                    useBuiltInState={false}
+                    disableBuiltInState
                     isChecked={numbers}
                     onPress={() => setNumbers(!numbers)}
                     fillColor="#C9A0DC"
@@ -148,45 +149,43 @@ export default function App() {
                 <View style={styles.inputWrapper}>
                   <Text style={styles.heading}>Include Symbols</Text>
                   <BouncyCheckbox
-                    useBuiltInState={false}
+                    disableBuiltInState
                     isChecked={symbols}
                     onPress={() => setSymbols(!symbols)}
                     fillColor="#FC80A5"
                     style={styles.bouncyBox4}
                   />
                 </View>
-                <View style={styles.formActions}>
-                  <TouchableOpacity
-                    disabled={!isValid}
-                    style={styles.primaryBtn}
-                    onPress={() => { handleSubmit }}
-                  >
-                    <Text style={styles.primaryBtnTxt}>Generate Password</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.secondaryBtn}
-                    onPress={() => {
-                      handleReset();
-                      resetPasswordState()
-                    }}
-                  >
-                    <Text style={styles.secondaryBtnTxt}>Reset</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
+         <View style={styles.formActions}>
+          <TouchableOpacity
+          disabled={!isValid}
+          style={styles.primaryBtn}
+          onPress={handleSubmit}
+          >
+            <Text style={styles.primaryBtnTxt}>Generate Password</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+          style={styles.secondaryBtn}
+          onPress={ () => {
+            handleReset();
+            resetPasswordState()
+          }}
+          >
+            <Text style={styles.secondaryBtnTxt}>Reset</Text>
+          </TouchableOpacity>
+         </View>
+         </>
+       )}
           </Formik>
         </View>
-        <View>        
-          {isPassGenerated ? (
+        {isPassGenerated ? (
           <View style={[styles.card, styles.cardElevated]}>
             <Text style={styles.subTitle}>Result:</Text>
-            <Text style={styles.description}>Long Press to copy</Text>
             <Text selectable={true} style={styles.generatedPassword}>{password}</Text>
+            <Text style={styles.description}>Long Press to copy</Text>
+            
           </View>
         ) : null}
-        </View>
-
       </SafeAreaView>
     </ScrollView>
   )
@@ -211,12 +210,13 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 30,
     fontWeight: '600',
-    marginBottom: 2,
-    color: 'black'
+    color: 'white'
   },
   description: {
     marginBottom: 8,
-    color: 'black'
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '600'
   },
   heading: {
     fontSize: 25,
@@ -275,13 +275,13 @@ const styles = StyleSheet.create({
     fontSize: 24
   },
   card: {
+    marginTop: 20,
     padding: 12,
     borderRadius: 6,
     marginHorizontal: 12,
-    backgroundColor: 'black'
+    backgroundColor: 'orange'
   },
   cardElevated: {
-    backgroundColor: '#ffffff',
     elevation: 1,
     shadowOffset: {
       width: 1,
@@ -292,10 +292,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   generatedPassword: {
-    fontSize: 22,
+    fontSize: 42,
     textAlign: 'center',
     marginBottom: 12,
-    color: '#fff'
+    color: 'white',
+    fontWeight: 'bold'
   },
   bouncyBox4: {
     marginLeft: 87
